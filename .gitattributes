@@ -1,0 +1,8 @@
+# Normalize line endings for text; never touch binary formats
+* text=auto
+*.pdf binary
+*.png binary
+*.jpg binary
+*.ico binary
+*.woff binary
+*.woff2 binary
