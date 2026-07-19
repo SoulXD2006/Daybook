@@ -36,6 +36,11 @@ export function TodayView({ userName }: { userName?: string }) {
     setTasks((prev) => (prev ? [task, ...prev] : [task]));
   }
 
+  async function clearCompleted() {
+    setTasks((prev) => prev && prev.filter((t) => !t.completed));
+    await fetch("/api/tasks/completed", { method: "DELETE" });
+  }
+
   const { overdue, today, upcoming, doneToday } = useMemo(() => {
     const list = tasks ?? [];
     const now = new Date();
@@ -145,7 +150,15 @@ export function TodayView({ userName }: { userName?: string }) {
 
           {doneToday.length > 0 && (
             <section>
-              <h2 className="mb-1 text-sm font-medium text-text-muted">Done today</h2>
+              <div className="mb-1 flex items-baseline justify-between">
+                <h2 className="text-sm font-medium text-text-muted">Done today</h2>
+                <button
+                  onClick={clearCompleted}
+                  className="text-xs text-text-muted underline-offset-4 transition-colors hover:text-accent hover:underline"
+                >
+                  Clear completed
+                </button>
+              </div>
               <ul className="divide-y divide-border/60">
                 <AnimatePresence initial={false}>
                   {doneToday.map((t) => (
